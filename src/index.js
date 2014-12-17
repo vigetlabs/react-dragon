@@ -60,23 +60,27 @@ var Draggable = React.createClass({
   },
 
   _onDragEnd(e) {
+    e.preventDefault();
     this.setState({ droppable: false, dragging: false });
   },
 
   _onDragOver(e) {
+    e.preventDefault();
     this.setState({ droppable: true });
   },
 
   _onDragLeave(e) {
+    e.preventDefault();
     this.setState({ droppable: false });
   },
 
   _onDrop(e) {
     e.preventDefault();
 
-    this.props.onDrop(JSON.parse(e.dataTransfer.getData('text/plain')));
+    var message  = JSON.parse(e.dataTransfer.getData('text/plain'));
+    var receiver = this.props.message;
 
-    this.setState({ droppable: false, dragging: false });
+    this.props.onDrop(message, receiver);
   }
 
 });

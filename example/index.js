@@ -1,18 +1,41 @@
 var React  = require('react');
-var FocusTrap = require('../dist/focus-trap');
+var Dragon = require('../dist/react-dragon');
 
 var Component = React.createClass({
 
-  render() {
+  getInitialState() {
+    return {
+      items: [
+        { id: 1, text: 'Ground patrol' },
+        { id: 2, text: 'to Major Tom'  }
+      ]
+    }
+  },
+
+  makeDragon(record, i) {
     return (
-      <FocusTrap onExit={ this._onExit }>
-        <p>Hello!</p>
-      </FocusTrap>
+      <Dragon key={ record.id } message={ i } onDrop={ this._onDrop }>
+        { record.text }
+      </Dragon>
     );
   },
 
-  _onExit() {
-    console.log("yep")
+  render() {
+    return (
+      <div>{ this.state.items.map(this.makeDragon) }</div>
+    );
+  },
+
+  _onDrop(transmission, receiver) {
+    var items = this.state.items.concat();
+
+    var a = items[transmission];
+    var b = items[receiver];
+
+    items[transmission] = b;
+    items[receiver] = a;
+
+    this.setState({ items })
   }
 
 });
