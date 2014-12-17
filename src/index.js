@@ -81,6 +81,7 @@ var Draggable = React.createClass({
     var receiver = this.props.message;
 
     this.props.onDrop(message, receiver);
+    this.setState({ droppable: false, dragging: false });
   }
 
 });
