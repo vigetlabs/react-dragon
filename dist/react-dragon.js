@@ -88,7 +88,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	
-	
 	  render:function() {
 	    var className = cx(this.props.className, cx({
 	      'dragon'           : true,
