@@ -63,11 +63,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * A draggability component helper
 	 */
 	
-	var React = __webpack_require__(/*! react */ 1);
-	var Types = React.PropTypes;
-	var cx    = __webpack_require__(/*! ./utils/classSet */ 2);
+	var React    = __webpack_require__(/*! react */ 1);
+	var Types    = React.PropTypes;
+	var cx       = __webpack_require__(/*! ./utils/classSet */ 2);
+	var hasChild = __webpack_require__(/*! ./utils/hasChild */ 3);
 	
-	var Draggable = React.createClass({displayName: 'Draggable',
+	var Draggable = React.createClass({displayName: "Draggable",
 	
 	  propTypes: {
 	    onDrop  : Types.func.isRequired,
@@ -103,12 +104,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	           onDragStart:  this._onDragStart, 
 	           onDragEnd:  this._onDragEnd, 
 	           draggable: true}, 
-	        React.createElement("div", {className: "dragon-children"},  this.props.children)
+	      React.createElement("div", {ref: "children", className: "dragon-children"},  this.props.children)
 	      )
 	    );
 	  },
 	
 	  _onDragStart:function(e) {
+	    var target   = document.elementFromPoint(e.pageX, e.pageY)
+	    var children = this.refs.children.getDOMNode()
+	
+	    if (target == children || hasChild(target, children)) {
+	      return e.preventDefault();
+	    }
+	
 	    var $__0=      this.props,message=$__0.message,dropEffect=$__0.dropEffect,effectAllowed=$__0.effectAllowed;
 	
 	    e.dataTransfer.setData('text/plain', JSON.stringify(message));
@@ -201,6 +209,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	
 	module.exports = cx;
+
+
+/***/ },
+/* 3 */
+/*!*******************************!*\
+  !*** ./src/utils/hasChild.js ***!
+  \*******************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = function within (child, parent) {
+	  var node = child;
+	
+	  while (node = node.parentNode) {
+	    if (node == parent) return true;
+	  }
+	
+	  return false;
+	};
 
 
 /***/ }

@@ -4,9 +4,10 @@
  * A draggability component helper
  */
 
-var React = require('react');
-var Types = React.PropTypes;
-var cx    = require('./utils/classSet');
+var React    = require('react');
+var Types    = React.PropTypes;
+var cx       = require('./utils/classSet');
+var hasChild = require('./utils/hasChild');
 
 var Draggable = React.createClass({
 
@@ -44,12 +45,19 @@ var Draggable = React.createClass({
            onDragStart={ this._onDragStart }
            onDragEnd={ this._onDragEnd }
            draggable>
-        <div className="dragon-children">{ this.props.children }</div>
+      <div ref="children" className="dragon-children">{ this.props.children }</div>
       </div>
     );
   },
 
   _onDragStart(e) {
+    var target   = document.elementFromPoint(e.pageX, e.pageY)
+    var children = this.refs.children.getDOMNode()
+
+    if (target == children || hasChild(target, children)) {
+      return e.preventDefault();
+    }
+
     var { message, dropEffect, effectAllowed } = this.props;
 
     e.dataTransfer.setData('text/plain', JSON.stringify(message));
