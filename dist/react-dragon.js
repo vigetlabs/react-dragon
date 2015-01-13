@@ -71,14 +71,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Draggable = React.createClass({displayName: "Draggable",
 	
 	  propTypes: {
-	    onDrop  : Types.func.isRequired,
-	    message : Types.any.isRequired
+	    onDrop            : Types.func.isRequired,
+	    draggableChildren : Types.bool,
+	    message           : Types.any.isRequired
 	  },
 	
 	  getDefaultProps:function() {
 	    return {
-	      dropEffect    : 'copy',
-	      effectAllowed : 'all'
+	      dropEffect        : 'copy',
+	      draggableChildren : false,
+	      effectAllowed     : 'all'
 	    }
 	  },
 	
@@ -113,7 +115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var target   = document.elementFromPoint(e.pageX, e.pageY)
 	    var children = this.refs.children.getDOMNode()
 	
-	    if (target == children || hasChild(target, children)) {
+	    if (this.props.draggableChildren === false && target == children || hasChild(target, children)) {
 	      return e.preventDefault();
 	    }
 	

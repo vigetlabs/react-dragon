@@ -172,14 +172,16 @@
 		var Draggable = React.createClass({displayName: "Draggable",
 		
 		  propTypes: {
-		    onDrop  : Types.func.isRequired,
-		    message : Types.any.isRequired
+		    onDrop            : Types.func.isRequired,
+		    draggableChildren : Types.bool,
+		    message           : Types.any.isRequired
 		  },
 		
 		  getDefaultProps:function() {
 		    return {
-		      dropEffect    : 'copy',
-		      effectAllowed : 'all'
+		      dropEffect        : 'copy',
+		      draggableChildren : false,
+		      effectAllowed     : 'all'
 		    }
 		  },
 		
@@ -214,7 +216,7 @@
 		    var target   = document.elementFromPoint(e.pageX, e.pageY)
 		    var children = this.refs.children.getDOMNode()
 		
-		    if (target == children || hasChild(target, children)) {
+		    if (this.props.draggableChildren === false && target == children || hasChild(target, children)) {
 		      return e.preventDefault();
 		    }
 		
@@ -14809,7 +14811,7 @@
 	
 	"use strict";
 	
-	var hyphenate = __webpack_require__(/*! ./hyphenate */ 135);
+	var hyphenate = __webpack_require__(/*! ./hyphenate */ 133);
 	
 	var msPattern = /^ms-/;
 	
@@ -14859,8 +14861,8 @@
 	var EventPluginRegistry = __webpack_require__(/*! ./EventPluginRegistry */ 97);
 	var EventPluginUtils = __webpack_require__(/*! ./EventPluginUtils */ 5);
 	
-	var accumulateInto = __webpack_require__(/*! ./accumulateInto */ 133);
-	var forEachAccumulated = __webpack_require__(/*! ./forEachAccumulated */ 134);
+	var accumulateInto = __webpack_require__(/*! ./accumulateInto */ 134);
+	var forEachAccumulated = __webpack_require__(/*! ./forEachAccumulated */ 135);
 	var invariant = __webpack_require__(/*! ./invariant */ 34);
 	
 	/**
@@ -15523,8 +15525,8 @@
 	var EventConstants = __webpack_require__(/*! ./EventConstants */ 33);
 	var EventPluginHub = __webpack_require__(/*! ./EventPluginHub */ 96);
 	
-	var accumulateInto = __webpack_require__(/*! ./accumulateInto */ 133);
-	var forEachAccumulated = __webpack_require__(/*! ./forEachAccumulated */ 134);
+	var accumulateInto = __webpack_require__(/*! ./accumulateInto */ 134);
+	var forEachAccumulated = __webpack_require__(/*! ./forEachAccumulated */ 135);
 	
 	var PropagationPhases = EventConstants.PropagationPhases;
 	var getListener = EventPluginHub.getListener;
@@ -16764,8 +16766,8 @@
 	
 	var ReactBrowserEventEmitter = __webpack_require__(/*! ./ReactBrowserEventEmitter */ 52);
 	
-	var accumulateInto = __webpack_require__(/*! ./accumulateInto */ 133);
-	var forEachAccumulated = __webpack_require__(/*! ./forEachAccumulated */ 134);
+	var accumulateInto = __webpack_require__(/*! ./accumulateInto */ 134);
+	var forEachAccumulated = __webpack_require__(/*! ./forEachAccumulated */ 135);
 	var invariant = __webpack_require__(/*! ./invariant */ 34);
 	
 	function remove(event) {
@@ -18143,6 +18145,46 @@
 
 /***/ },
 /* 133 */
+/*!***********************************!*\
+  !*** ../~/react/lib/hyphenate.js ***!
+  \***********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2014, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule hyphenate
+	 * @typechecks
+	 */
+	
+	var _uppercasePattern = /([A-Z])/g;
+	
+	/**
+	 * Hyphenates a camelcased string, for example:
+	 *
+	 *   > hyphenate('backgroundColor')
+	 *   < "background-color"
+	 *
+	 * For CSS style names, use `hyphenateStyleName` instead which works properly
+	 * with all vendor prefixes, including `ms`.
+	 *
+	 * @param {string} string
+	 * @return {string}
+	 */
+	function hyphenate(string) {
+	  return string.replace(_uppercasePattern, '-$1').toLowerCase();
+	}
+	
+	module.exports = hyphenate;
+
+
+/***/ },
+/* 134 */
 /*!****************************************!*\
   !*** ../~/react/lib/accumulateInto.js ***!
   \****************************************/
@@ -18214,7 +18256,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ../~/webpack/~/node-libs-browser/~/process/browser.js */ 28)))
 
 /***/ },
-/* 134 */
+/* 135 */
 /*!********************************************!*\
   !*** ../~/react/lib/forEachAccumulated.js ***!
   \********************************************/
@@ -18249,46 +18291,6 @@
 	};
 	
 	module.exports = forEachAccumulated;
-
-
-/***/ },
-/* 135 */
-/*!***********************************!*\
-  !*** ../~/react/lib/hyphenate.js ***!
-  \***********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2014, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule hyphenate
-	 * @typechecks
-	 */
-	
-	var _uppercasePattern = /([A-Z])/g;
-	
-	/**
-	 * Hyphenates a camelcased string, for example:
-	 *
-	 *   > hyphenate('backgroundColor')
-	 *   < "background-color"
-	 *
-	 * For CSS style names, use `hyphenateStyleName` instead which works properly
-	 * with all vendor prefixes, including `ms`.
-	 *
-	 * @param {string} string
-	 * @return {string}
-	 */
-	function hyphenate(string) {
-	  return string.replace(_uppercasePattern, '-$1').toLowerCase();
-	}
-	
-	module.exports = hyphenate;
 
 
 /***/ },
