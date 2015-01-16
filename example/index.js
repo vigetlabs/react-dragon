@@ -1,5 +1,5 @@
 var React  = require('react');
-var Dragon = require('../dist/react-dragon');
+var Dragon = require('../src/index');
 
 var Component = React.createClass({
 
@@ -15,7 +15,8 @@ var Component = React.createClass({
   makeDragon(record, i) {
     return (
       <Dragon key={ record.id } message={ i } onDrop={ this._onDrop }>
-        { record.text }
+        <div contentEditable dangerouslySetInnerHTML={{ __html: record.text }} />
+        <input defaultValue={ record.text } />
       </Dragon>
     );
   },
@@ -40,4 +41,4 @@ var Component = React.createClass({
 
 });
 
-React.render(<Component />, document.body);
+React.render(<Component />, document.getElementById('app'));

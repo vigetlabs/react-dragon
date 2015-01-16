@@ -1,5 +1,5 @@
-module.exports = function within (child, parent) {
-  var node = child;
+export default function within (child, parent) {
+  let node = child;
 
   while (node = node.parentNode) {
     if (node == parent) return true;

@@ -1,19 +1,19 @@
 var Webpack = require('webpack');
-var config  = require('./package');
 
 module.exports = {
-
-  entry: './src/index.js',
-
-  output: {
-    libraryTarget: 'umd',
-    path: './dist',
-    filename: config.name + '.js'
+  entry: {
+    'example.build': './example/index.js'
   },
 
-  externals: {
-    'react': 'react',
-    'react/addons': 'react/addons'
+  output: {
+    filename: 'example.build.js',
+    path: './example',
+    devtoolModuleFilenameTemplate: '[resource-path]'
+  },
+
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json'],
+    modulesDirectories: [ 'web_modules', 'node_modules' ]
   },
 
   plugins: [
@@ -21,11 +21,6 @@ module.exports = {
       to5Runtime: "imports?global=>{}!exports?global.to5Runtime!6to5/runtime"
     })
   ],
-
-  resolve: {
-    extensions: ['', '.js', '.jsx', '.json'],
-    modulesDirectories: [ 'web_modules', 'node_modules', 'src' ]
-  },
 
   module: {
     loaders: [
