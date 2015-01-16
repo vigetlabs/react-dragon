@@ -60,10 +60,10 @@ let Draggable = React.createClass({
   _isDraggableAt(x, y) {
     if (this.props.draggableChildren) return true;
 
-    let target   = document.elementFromPoint(x, y);
-    let children = this.refs.children.getDOMNode();
+    let element   = document.elementFromPoint(x, y);
+    let container = this.refs.children.getDOMNode();
 
-    return target == children || hasChild(target, children);
+    return element == container || hasChild(element, container);
   },
 
   _onFocus() {
