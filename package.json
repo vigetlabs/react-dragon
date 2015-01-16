@@ -19,11 +19,8 @@
   "devDependencies": {
     "6to5": "^2.12.6",
     "6to5-loader": "^2.0.0",
-    "envify": "^1.2.1",
-    "envify-loader": "^0.1.0",
     "exports-loader": "^0.6.2",
     "imports-loader": "^0.6.3",
-    "jsx-loader": "^0.12.2",
     "react": "^0.12.1",
     "react-tools": "^0.12.1",
     "webpack": "^1.4.13"
