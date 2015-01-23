@@ -1,6 +1,6 @@
 {
   "name": "react-dragon",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "A dead simple react drag and drop component",
   "main": "dist/react-dragon.js",
   "scripts": {

@@ -14,7 +14,7 @@ var Component = React.createClass({
 
   makeDragon(record, i) {
     return (
-      <Dragon key={ record.id } message={ i } onDrop={ this._onDrop }>
+      <Dragon key={ record.id } element="li" message={ i } onDrop={ this._onDrop }>
         <div contentEditable dangerouslySetInnerHTML={{ __html: record.text }} />
         <input defaultValue={ record.text } />
       </Dragon>
@@ -23,7 +23,7 @@ var Component = React.createClass({
 
   render() {
     return (
-      <div>{ this.state.items.map(this.makeDragon) }</div>
+      <ul>{ this.state.items.map(this.makeDragon) }</ul>
     );
   },
 

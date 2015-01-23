@@ -122,10 +122,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _isDraggableAt: function IsDraggableAt(x, y) {
 	    if (this.props.draggableChildren) return true;
 
-	    var target = document.elementFromPoint(x, y);
-	    var children = this.refs.children.getDOMNode();
+	    var element = document.elementFromPoint(x, y);
+	    var container = this.refs.children.getDOMNode();
 
-	    return target == children || hasChild(target, children);
+	    return element == container || hasChild(element, container);
 	  },
 
 	  _onFocus: function OnFocus() {
@@ -236,8 +236,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	function within(child, parent) {
 	  var node = child;
 
-	  while (node = node.parentNode) {
+	  while (node) {
 	    if (node == parent) return true;
+	    node = node.parentNode;
 	  }
 
 	  return false;

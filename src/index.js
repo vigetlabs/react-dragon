@@ -19,6 +19,7 @@ let Draggable = React.createClass({
 
   getDefaultProps() {
     return {
+      element           : 'div',
       draggableChildren : false,
       dropEffect        : 'copy',
       effectAllowed     : 'all'
@@ -40,21 +41,19 @@ let Draggable = React.createClass({
       'dragon-droppable' : this.state.droppable
     }));
 
-    return (
-      <div className={ className }
-           draggable={ this.state.draggable }
-           onDragOver={ this._onDragOver }
-           onDragLeave={ this._onDragLeave }
-           onDrop={ this._onDrop }
-           onDragStart={ this._onDragStart }
-           onDragEnd={ this._onDragEnd }>
-
-        <div ref="children" className="dragon-children" onFocus={ this._onFocus } onBlur={ this._onBlur }>
-          { this.props.children }
-        </div>
-
+    return React.createElement(this.props.element, {
+      className   : className,
+      draggable   : this.state.draggable,
+      onDragOver  : this._onDragOver,
+      onDragLeave : this._onDragLeave,
+      onDrop      : this._onDrop,
+      onDragStart : this._onDragStart,
+      onDragEnd   : this._onDragEnd
+    }, (
+      <div ref="children" className="dragon-children" onFocus={ this._onFocus } onBlur={ this._onBlur }>
+        { this.props.children }
       </div>
-    );
+    ));
   },
 
   _isDraggableAt(x, y) {
