@@ -1,8 +1,6 @@
-# React Dragon
+![React Dragon NPM](https://nodei.co/npm/react-dragon.png)
 
 A very simple drag and drop component. Did I mention it was simple?
-
-![React Dragon NPM](https://nodei.co/npm/react-dragon.png)
 
 ## Usage
 
