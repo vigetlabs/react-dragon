@@ -3,26 +3,22 @@
  * A draggability component helper
  */
 
-import React    from 'react';
-import cx       from './utils/classSet';
-import hasChild from './utils/hasChild';
-
-let Types = React.PropTypes;
+import React from 'react'
+import cx    from './utils/classSet'
 
 let Draggable = React.createClass({
 
   propTypes: {
-    draggableChildren : Types.bool,
-    message           : Types.any.isRequired,
-    onDrop            : Types.func.isRequired
+    onDrop : React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {
     return {
-      element           : 'div',
-      draggableChildren : false,
-      dropEffect        : 'copy',
-      effectAllowed     : 'all'
+      allow     : 'all',
+      className : '',
+      effect    : 'copy',
+      element   : 'div',
+      message   : {}
     }
   },
 
@@ -35,79 +31,55 @@ let Draggable = React.createClass({
   },
 
   render() {
-    let className = cx(this.props.className, cx({
-      'dragon'           : true,
-      'dragon-dragging'  : this.state.dragging,
-      'dragon-droppable' : this.state.droppable
-    }));
+    let { dragging, draggable, droppable } = this.state
+    let { className, children, element   } = this.props
 
-    return React.createElement(this.props.element, {
-      className   : className,
-      draggable   : this.state.draggable,
-      onDragOver  : this._onDragOver,
-      onDragLeave : this._onDragLeave,
-      onDrop      : this._onDrop,
+    let modifiers = cx({
+      'dragon-dragging'  : dragging,
+      'dragon-droppable' : droppable
+    })
+
+    return React.createElement(element, {
+      className   : cx('dragon', cx(className), modifiers),
+      draggable   : draggable,
+      onBlur      : this._handle({ draggable: true }),
+      onFocus     : this._handle({ draggable: false }),
+      onDragEnd   : this._handle({ droppable: false, dragging: false }, true),
+      onDragLeave : this._handle({ droppable: false }, true),
+      onDragOver  : this._handle({ droppable: true }, true),
       onDragStart : this._onDragStart,
-      onDragEnd   : this._onDragEnd
-    }, (
-      <div ref="children" className="dragon-children" onFocus={ this._onFocus } onBlur={ this._onBlur }>
-        { this.props.children }
-      </div>
-    ));
+      onDrop      : this._onDrop
+    }, children)
   },
 
-  _isDraggableAt(x, y) {
-    if (this.props.draggableChildren) return true;
-
-    let element   = document.elementFromPoint(x, y);
-    let container = this.refs.children.getDOMNode();
-
-    return element == container || hasChild(element, container);
-  },
-
-  _onFocus() {
-    this.setState({ draggable: false })
-  },
-
-  _onBlur() {
-    this.setState({ draggable: true })
+  _handle(state, prevent) {
+    return event => {
+      if (prevent) event.preventDefault()
+      this.setState(state)
+    }
   },
 
   _onDragStart(e) {
-    if (this._isDraggableAt(e.pageX, e.pageY)) return e.preventDefault();
+    let { effect, allow, message } = this.props
 
-    e.dataTransfer.setData('text/plain', JSON.stringify(this.props.message));
-    e.dataTransfer.dropEffect = this.props.dropEffect;
-    e.dataTransfer.effectAllowed = this.props.effectAllowed;
+    e.dataTransfer.setData('text/plain', JSON.stringify(message))
+    e.dataTransfer.dropEffect    = effect
+    e.dataTransfer.effectAllowed = allow
 
-    this.setState({ dragging: true });
-  },
-
-  _onDragEnd(e) {
-    e.preventDefault();
-    this.setState({ droppable: false, dragging: false });
-  },
-
-  _onDragOver(e) {
-    e.preventDefault();
-    this.setState({ droppable: true });
-  },
-
-  _onDragLeave(e) {
-    e.preventDefault();
-    this.setState({ droppable: false });
+    this.setState({ dragging: true })
   },
 
   _onDrop(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    let message  = JSON.parse(e.dataTransfer.getData('text/plain'));
-    let receiver = this.props.message;
+    let message  = JSON.parse(e.dataTransfer.getData('text/plain'))
+    let receiver = this.props.message
 
-    this.props.onDrop(message, receiver);
-    this.setState({ droppable: false, dragging: false });
+    this.props.onDrop(message, receiver)
+
+    this.setState({ droppable: false, dragging: false })
   }
 
-});
+})
 
-export default Draggable;
+export default Draggable

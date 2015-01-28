@@ -65,8 +65,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var cx = to5Runtime.interopRequire(__webpack_require__(2));
 
-	var hasChild = to5Runtime.interopRequire(__webpack_require__(3));
-
 	var Types = React.PropTypes;
 
 	var Draggable = React.createClass({
@@ -74,14 +72,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 	  propTypes: {
-	    draggableChildren: Types.bool,
+	    className: Types.string,
 	    message: Types.any.isRequired,
 	    onDrop: Types.func.isRequired
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
-	      draggableChildren: false,
+	      className: "",
+	      element: "div",
 	      dropEffect: "copy",
 	      effectAllowed: "all"
 	    };
@@ -96,36 +95,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  render: function render() {
-	    var className = cx(this.props.className, cx({
-	      dragon: true,
-	      "dragon-dragging": this.state.dragging,
-	      "dragon-droppable": this.state.droppable
-	    }));
+	    var dragging = this.state.dragging;
+	    var draggable = this.state.draggable;
+	    var droppable = this.state.droppable;
+	    var className = this.props.className;
+	    var children = this.props.children;
+	    var element = this.props.element;
 
-	    return React.createElement(
-	      "div",
-	      { className: className,
-	        draggable: this.state.draggable,
-	        onDragOver: this._onDragOver,
-	        onDragLeave: this._onDragLeave,
-	        onDrop: this._onDrop,
-	        onDragStart: this._onDragStart,
-	        onDragEnd: this._onDragEnd },
-	      React.createElement(
-	        "div",
-	        { ref: "children", className: "dragon-children", onFocus: this._onFocus, onBlur: this._onBlur },
-	        this.props.children
-	      )
-	    );
-	  },
 
-	  _isDraggableAt: function IsDraggableAt(x, y) {
-	    if (this.props.draggableChildren) return true;
+	    var modifiers = cx({
+	      "dragon-dragging": dragging,
+	      "dragon-droppable": droppable
+	    });
 
-	    var element = document.elementFromPoint(x, y);
-	    var container = this.refs.children.getDOMNode();
-
-	    return element == container || hasChild(element, container);
+	    return React.createElement(element, {
+	      className: cx("dragon", className, modifiers),
+	      draggable: draggable,
+	      onBlur: this._onBlur,
+	      onDragEnd: this._onDragEnd,
+	      onDragLeave: this._onDragLeave,
+	      onDragOver: this._onDragOver,
+	      onDragStart: this._onDragStart,
+	      onDrop: this._onDrop,
+	      onFocus: this._onFocus
+	    }, children);
 	  },
 
 	  _onFocus: function OnFocus() {
@@ -137,8 +130,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  _onDragStart: function OnDragStart(e) {
-	    if (this._isDraggableAt(e.pageX, e.pageY)) return e.preventDefault();
-
 	    e.dataTransfer.setData("text/plain", JSON.stringify(this.props.message));
 	    e.dataTransfer.dropEffect = this.props.dropEffect;
 	    e.dataTransfer.effectAllowed = this.props.effectAllowed;
@@ -168,13 +159,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var receiver = this.props.message;
 
 	    this.props.onDrop(message, receiver);
+
 	    this.setState({ droppable: false, dragging: false });
 	  }
 
 	});
 
 	module.exports = Draggable;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
 /* 1 */
@@ -228,24 +220,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	module.exports = within;
-	function within(child, parent) {
-	  var node = child;
-
-	  while (node) {
-	    if (node == parent) return true;
-	    node = node.parentNode;
-	  }
-
-	  return false;
-	}
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
