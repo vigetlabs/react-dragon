@@ -5,7 +5,7 @@ A very simple drag and drop component. Did I mention it was simple?
 ## Usage
 
 Properties | Description
----------- | -----------
+:--------- | :----------
 onDrop     | **Required**. This is the callback that executes when an item is dropped onto a `<Dragon />`
 allow      | Directly translates to event.dataTransfer.effectAllowed. Defaults to "all"
 className  | Additional css class names. This can be a string or an object. The value will be injected into the `classSet` React addon
