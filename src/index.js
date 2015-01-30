@@ -6,7 +6,7 @@
 import React from 'react'
 import cx    from './utils/classSet'
 
-let Draggable = React.createClass({
+let Dragon = React.createClass({
 
   propTypes: {
     onDrop : React.PropTypes.func.isRequired
@@ -32,7 +32,7 @@ let Draggable = React.createClass({
 
   render() {
     let { dragging, draggable, droppable } = this.state
-    let { className, children, element   } = this.props
+    let { className, children, element, onDrop, message, allow, effect, ...safe } = this.props
 
     let modifiers = cx({
       'dragon-dragging'  : dragging,
@@ -48,7 +48,8 @@ let Draggable = React.createClass({
       onDragLeave : this._handle({ droppable: false }, true),
       onDragOver  : this._handle({ droppable: true }, true),
       onDragStart : this._onDragStart,
-      onDrop      : this._onDrop
+      onDrop      : this._onDrop,
+      ...safe
     }, children)
   },
 
@@ -82,4 +83,4 @@ let Draggable = React.createClass({
 
 })
 
-export default Draggable
+export default Dragon

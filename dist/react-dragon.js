@@ -65,24 +65,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var cx = to5Runtime.interopRequire(__webpack_require__(2));
 
-	var Types = React.PropTypes;
-
 	var Draggable = React.createClass({
 	  displayName: "Draggable",
 
 
 	  propTypes: {
-	    className: Types.string,
-	    message: Types.any.isRequired,
-	    onDrop: Types.func.isRequired
+	    onDrop: React.PropTypes.func.isRequired
 	  },
 
 	  getDefaultProps: function getDefaultProps() {
 	    return {
+	      allow: "all",
 	      className: "",
+	      effect: "copy",
 	      element: "div",
-	      dropEffect: "copy",
-	      effectAllowed: "all"
+	      message: {}
 	    };
 	  },
 
@@ -109,47 +106,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    return React.createElement(element, {
-	      className: cx("dragon", className, modifiers),
+	      className: cx("dragon", cx(className), modifiers),
 	      draggable: draggable,
-	      onBlur: this._onBlur,
-	      onDragEnd: this._onDragEnd,
-	      onDragLeave: this._onDragLeave,
-	      onDragOver: this._onDragOver,
+	      onBlur: this._handle({ draggable: true }),
+	      onFocus: this._handle({ draggable: false }),
+	      onDragEnd: this._handle({ droppable: false, dragging: false }, true),
+	      onDragLeave: this._handle({ droppable: false }, true),
+	      onDragOver: this._handle({ droppable: true }, true),
 	      onDragStart: this._onDragStart,
-	      onDrop: this._onDrop,
-	      onFocus: this._onFocus
+	      onDrop: this._onDrop
 	    }, children);
 	  },
 
-	  _onFocus: function OnFocus() {
-	    this.setState({ draggable: false });
-	  },
-
-	  _onBlur: function OnBlur() {
-	    this.setState({ draggable: true });
+	  _handle: function Handle(state, prevent) {
+	    var _this = this;
+	    return function (event) {
+	      if (prevent) event.preventDefault();
+	      _this.setState(state);
+	    };
 	  },
 
 	  _onDragStart: function OnDragStart(e) {
-	    e.dataTransfer.setData("text/plain", JSON.stringify(this.props.message));
-	    e.dataTransfer.dropEffect = this.props.dropEffect;
-	    e.dataTransfer.effectAllowed = this.props.effectAllowed;
+	    var effect = this.props.effect;
+	    var allow = this.props.allow;
+	    var message = this.props.message;
+
+
+	    e.dataTransfer.setData("text/plain", JSON.stringify(message));
+	    e.dataTransfer.dropEffect = effect;
+	    e.dataTransfer.effectAllowed = allow;
 
 	    this.setState({ dragging: true });
-	  },
-
-	  _onDragEnd: function OnDragEnd(e) {
-	    e.preventDefault();
-	    this.setState({ droppable: false, dragging: false });
-	  },
-
-	  _onDragOver: function OnDragOver(e) {
-	    e.preventDefault();
-	    this.setState({ droppable: true });
-	  },
-
-	  _onDragLeave: function OnDragLeave(e) {
-	    e.preventDefault();
-	    this.setState({ droppable: false });
 	  },
 
 	  _onDrop: function OnDrop(e) {
