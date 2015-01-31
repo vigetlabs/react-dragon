@@ -1,5 +1,5 @@
 var React  = require('react');
-var Dragon = require('../src/index');
+var Dragon = require('../dragon');
 
 var Component = React.createClass({
 

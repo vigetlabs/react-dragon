@@ -1,10 +1,5 @@
-/**
- * Draggable
- * A draggability component helper
- */
-
 import React from 'react'
-import cx    from './utils/classSet'
+import cx    from 'react-classset'
 
 let Dragon = React.createClass({
 
