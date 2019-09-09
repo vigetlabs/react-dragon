@@ -1,6 +1,18 @@
+
+# React Dragon
+
 ![React Dragon NPM](https://nodei.co/npm/react-dragon.png)
 
 A very simple drag and drop component. Did I mention it was simple?
+
+## Heads up!
+
+This project scratched an itch for us in the early days of React, however it is no longer undergoing maintenance. Please consider using another react drag and drop package:
+
+- https://github.com/atlassian/react-beautiful-dnd
+- https://github.com/react-dnd/react-dnd
+
+Happy hunting!
 
 ## Usage
 
